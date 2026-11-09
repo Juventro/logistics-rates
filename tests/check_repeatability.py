@@ -2,6 +2,7 @@
 import os
 import subprocess
 import sys
+from tempfile import TemporaryDirectory
 from datetime import date,timedelta
 
 from etl.db import connect,event
@@ -24,6 +25,7 @@ if __name__=='__main__':
         expected=snapshot(conn)
         assert expected['mart.market_corridor'][0]>0 and expected['mart.ml_price_predictions'][0]>0
         for args in [[],['--start-date',str(as_of-timedelta(weeks=3)),'--end-date',str(as_of)]]:
-            subprocess.run([sys.executable,'-m','etl.pipeline',*args],check=True)
+            with TemporaryDirectory() as directory:
+                subprocess.run([sys.executable,'-m','etl.pipeline','--artifact-dir',directory,*args],check=True)
             assert snapshot(conn)==expected, f'Rerun changed data: {args}'
         event('repeatability_verified',snapshots=expected)

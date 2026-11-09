@@ -9,7 +9,7 @@ LOCK_ID = 20261026
 
 
 def connect():
-    return psycopg.connect(os.environ['DATABASE_URL'], autocommit=True)
+    return psycopg.connect(os.getenv('DATABASE_URL',''), autocommit=True)
 
 
 def event(name, **fields):

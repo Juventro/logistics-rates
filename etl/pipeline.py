@@ -24,12 +24,17 @@ def main():
     with connect() as conn:
         bootstrap(conn,args.n_prices)
         initialize(conn)
-        first,last=conn.execute('SELECT min(loading_date),max(loading_date) FROM raw.prices').fetchone()
-        if first is None:
-            raise ValueError('The source is empty')
+        first,last=conn.execute('''
+            SELECT min(first_date),max(last_date) FROM (
+                SELECT min(loading_date),max(loading_date) FROM raw.prices
+                UNION ALL SELECT min(loading_date),max(loading_date) FROM core.prices
+                UNION ALL SELECT min(loading_date),max(loading_date) FROM core.dq_quarantine_prices
+            ) bounds(first_date,last_date)
+        ''').fetchone()
+        first,last=first or args.as_of,last or args.as_of
         etl=run_etl(conn,args.start_date or first,args.end_date or last,args.as_of)
         metrics=None
-        if not args.skip_ml:
+        if not args.skip_ml and conn.execute('SELECT EXISTS(SELECT 1 FROM core.prices)').fetchone()[0]:
             from ml.train import train_and_score
             metrics=train_and_score(conn,args.as_of,args.artifact_dir,args.iterations,args.seed)
         counts={name:conn.execute(query).fetchone()[0] for name,query in {

@@ -20,7 +20,11 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-local_demo_only}@db:5432/${POSTGRES_DB:-deals_bigdata}
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: ${POSTGRES_USER:-postgres}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-local_demo_only}
+      PGDATABASE: ${POSTGRES_DB:-deals_bigdata}
       AS_OF: ${AS_OF:-2026-10-26}
       N_PRICES: ${N_PRICES:-300000}
       MODEL_ITERATIONS: ${MODEL_ITERATIONS:-300}
