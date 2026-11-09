@@ -1,0 +1,25 @@
+{
+  "workflow_url": "https://github.com/Juventro/logistics-rates/actions/runs/42656967683",
+  "commit": "a2e0e619de64bc833b29721bf0b9c810eba1b9be",
+  "dataset_rows": 300000,
+  "tests_passed": 31,
+  "full_and_partial_reruns": "passed",
+  "snapshots": {
+    "core.prices": [
+      299797,
+      "2ec73a77782d8f679a6bbfa7381a028e"
+    ],
+    "core.dq_quarantine_prices": [
+      203,
+      "74d805ad0ace2077281e158645da274f"
+    ],
+    "mart.market_corridor": [
+      203644,
+      "c7d5b1ccc6289002054c5717ab7f8c92"
+    ],
+    "mart.ml_price_predictions": [
+      19751,
+      "f86c859127417557ba9975b220ebe0de"
+    ]
+  }
+}

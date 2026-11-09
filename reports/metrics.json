@@ -1,0 +1,13 @@
+{
+  "model_name": "catboost_20261026",
+  "as_of": "2026-10-26",
+  "seed": 42,
+  "iterations": 300,
+  "train_rows": 27033,
+  "test_rows": 14305,
+  "future_rows": 5446,
+  "r2": 0.919451035205078,
+  "mape_pct": 15.281006847781722,
+  "rmse_rub": 54415.73631981876,
+  "mae_rub": 27809.52911373355
+}
